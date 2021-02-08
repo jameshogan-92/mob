@@ -26,14 +26,13 @@ class SignupScreen(Screen):
 
     def add_user(self, username,password):
         print("{} : {}".format(username,password))
-        if validate(username,password) == True:
-            db.createUser(username,password)
+        if db.createUser(username,password) != "Fail":
             self.manager.current = "signup_screen_success"
-        else : 
-            print('try again')
+
 
 class SignupScreenSuccess(Screen):
-    pass
+    def go_to_login(self):
+        self.manager.current = "login_screen"
 
 class RootWidget(ScreenManager):
     pass
