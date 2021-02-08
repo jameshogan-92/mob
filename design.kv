@@ -7,14 +7,19 @@
             Label:
                 text:"User Login"
             TextInput:
+                write_tab:False
                 id:username
                 hint_text:"Username"
             TextInput:
+                write_tab:False
                 id:password
                 hint_text:"Password"
             Button:
                 text: "Login"
                 on_press:root.login(root.ids.username.text,root.ids.password.text)
+        Label:
+            id:msgBar
+            text:""
         GridLayout:
             cols:2
             Button:
@@ -32,10 +37,14 @@
         Label:
             text:"How do you feel?"  
         TextInput:
+            id:answer
             hint_text:"Maybe happy, sad, overwhelmed..." 
         Button:
             text:"Enlighten me" 
-            on_press:
+            on_press:root.get_quote(root.ids.answer.text)
+        Label:
+            id:result_bar
+            text:""
 
 <SignupScreen>
     GridLayout:
@@ -45,9 +54,11 @@
         TextInput:
             id:username
             hint_text:"Username"
+            write_tab:False
         TextInput:
             id:password
             hint_text:"Password"
+            write_tab:False
         Button:
             text:"Submit"
             on_press:root.add_user(root.ids.username.text, root.ids.password.text)
