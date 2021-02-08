@@ -15,8 +15,13 @@ class Database:
             return "uname_in_use"
         else :
             return "Success"
-        
 
+    def checkCreds(self, username, password):
+        if len(self.cursor.execute("SELECT * FROM users WHERE username =? AND password =?",(username,password)).fetchall()) == 1:
+            return "correct"
+        else :
+            return "wrong"
+        
     def createUser(self, user_name = "", pword=""):
         if self.validate(user_name, pword) == "uname_in_use":
             return "Fail"

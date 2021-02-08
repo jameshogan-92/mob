@@ -7,32 +7,36 @@ db = Database("test.db")
 
 Builder.load_file("design.kv")
 
-def validate(uname,pword):
-        if uname != "" and pword != "":
-            return True
-        else :
-            return False 
-
 class LoginScreen(Screen):
+    def login(self, username="", password=""):
+        print(username)
+        if db.checkCreds(username,password) == "correct":
+            self.manager.transition.direction = "right"
+            self.manager.current = "login_screen_success"
+        else :
+            print("Invalid credentials")
+
     def sign_up(self):
+        self.manager.transition.direction = "right"
         self.manager.current = 'signup_screen'
 
-class SignupScreen(Screen):
-    def validate(uname,pword):
-        if uname != "" and pword != "":
-            return True
-        else :
-            return False 
+class LoginScreenSuccess(Screen):
 
+    def log_out(self):
+        self.manager.transition.direction = "right"
+        self.manager.current = "login_screen"
+    pass
+
+class SignupScreen(Screen):
     def add_user(self, username,password):
         print("{} : {}".format(username,password))
         if db.createUser(username,password) != "Fail":
+            self.manager.transition.direction = "right"
             self.manager.current = "signup_screen_success"
-
 
 class SignupScreenSuccess(Screen):
     def go_to_login(self):
-        self.manager.current = "login_screen"
+        self.manager.current = "login_screen_success"
 
 class RootWidget(ScreenManager):
     pass
