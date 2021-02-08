@@ -3,54 +3,95 @@
     GridLayout:
         cols:1
         GridLayout:
+            padding:15, 15
+            spacing:20, 20
             cols:1
             Label:
                 text:"User Login"
+                font_size:"20sp"
             TextInput:
                 write_tab:False
                 id:username
                 hint_text:"Username"
+                padding_x:20,10
+                font_size:"20sp"
             TextInput:
                 write_tab:False
                 id:password
                 hint_text:"Password"
-            Button:
-                text: "Login"
-                on_press:root.login(root.ids.username.text,root.ids.password.text)
+                password:True
+                padding:20,10
+                font_size:"20sp"
+            RelativeLayout:
+                Button:
+                    text: "Login"
+                    size_hint:0.3,0.5
+                    pos_hint:{'center_x':0.5,'center_y':0.6}
+                    on_press:root.login(root.ids.username.text,root.ids.password.text)
         Label:
             id:msgBar
             text:""
         GridLayout:
             cols:2
+            size_hint:0.2,0.2
+            padding:10,10
+            spacing:10,0
             Button:
                 text:"Forgot Password?"
+                background_color:1,1,1,0
+                opacity:1 if self.state == 'normal' else 0.5
+                color:0.2,0.5,1,1
             Button:
                 text:"Sign up"
                 on_press:root.sign_up()
+                background_color:(87/255), (255/255), (165/255),1
+                color:1,1,1,1
 
 <LoginScreenSuccess>
     GridLayout:
         cols:1
-        Button:
-            text:"Log out"
-            on_press:root.log_out()
+        spacing:30,30
+        padding:30,30
+        RelativeLayout:
+            ImageButton:
+                source:'resources/logout_hover.png' if self.hovered else 'resources/logout_nothover.png'
+                size_hint:0.35,0.35
+                pos_hint:{'center_x':0.9}
+                on_press:root.log_out()
         Label:
-            text:"How do you feel?"  
+            text:"How do you feel?"
+            font_size:"25sp"  
         TextInput:
             id:answer
             hint_text:"Maybe happy, sad, overwhelmed..." 
+            font_size:"30sp"
+            padding:20, 10
         Button:
             text:"Enlighten me" 
             on_press:root.get_quote(root.ids.answer.text)
-        Label:
-            id:result_bar
-            text:""
+        ScrollView:
+            Label:
+                id:result_bar
+                font_size:"20sp"
+                text_size:self.width,None
+                size_hint_y:None
+                height:self.texture_size[1]
+                text:""
 
 <SignupScreen>
     GridLayout:
         cols:1
+        padding:20,20
+        spacing:20,20
+        RelativeLayout:
+            Button:
+                size_hint:0.2,0.35
+                pos_hint:{'center_x':0.1,'center_y':0.1}
+                text:"back"
+                color:1,1,1,1
+                on_press:root.go_back()
         Label:
-            text:"Blah blah blah"
+            text:"Register"
         TextInput:
             id:username
             hint_text:"Username"
@@ -59,9 +100,12 @@
             id:password
             hint_text:"Password"
             write_tab:False
-        Button:
-            text:"Submit"
-            on_press:root.add_user(root.ids.username.text, root.ids.password.text)
+        RelativeLayout:
+            Button:
+                size_hint:0.3,0.5
+                pos_hint:{'center_x':0.5,'center_y':0.6}
+                text:"Submit"
+                on_press:root.add_user(root.ids.username.text, root.ids.password.text)
 
 <SignupScreenSuccess>  
     GridLayout:

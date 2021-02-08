@@ -9,12 +9,16 @@ class Database:
         self.conn.commit()
 
     def validate(self, username, password):
-        x= len(self.cursor.execute("SELECT * FROM users WHERE username =?",(username,)).fetchall())
-        print(x)
-        if x > 0:
-            return "uname_in_use"
-        else :
-            return "Success"
+        if len(username) == 0 or len(password) == 0:
+            print('Missing username and/or password')
+            return "blank"
+        else : 
+            x= len(self.cursor.execute("SELECT * FROM users WHERE username =?",(username,)).fetchall())
+            print(x)
+            if x > 0:
+                return "uname_in_use"
+            else :
+                return "Success"
 
     def checkCreds(self, username, password):
         if len(self.cursor.execute("SELECT * FROM users WHERE username =? AND password =?",(username,password)).fetchall()) == 1:
@@ -23,7 +27,7 @@ class Database:
             return "wrong"
         
     def createUser(self, user_name = "", pword=""):
-        if self.validate(user_name, pword) == "uname_in_use":
+        if self.validate(user_name, pword) == "uname_in_use" or self.validate(user_name, pword) == "blank" :
             return "Fail"
         else : 
             time = datetime.now().strftime("%Y-%m-%d-%H-%M-%S") 

@@ -1,7 +1,12 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen, ScreenManager
+from kivy.uix.image import Image
+from kivy.uix.behaviors import ButtonBehavior
 import random
+import glob
+from pathlib import Path
+from hoverable import HoverBehavior
 
 from database import Database
 db = Database("test.db")
@@ -24,6 +29,9 @@ class LoginScreen(Screen):
         self.manager.transition.direction = "right"
         self.manager.current = 'signup_screen'
 
+class ImageButton(ButtonBehavior, HoverBehavior,Image):     
+    pass
+
 class LoginScreenSuccess(Screen):
     """After successful log in"""
     def getRandom(self,file):
@@ -33,16 +41,25 @@ class LoginScreenSuccess(Screen):
             #     print(quote)
             result = quotes[random.randint(0,len(quotes)-1)]
             print(result)
+            #reformat as : "x once said y"?
             self.ids.result_bar.text = result
-            
 
     def get_quote(self, ans):
-        print(ans)
-        self.getRandom(ans)
+        available = glob.glob("quotes/*txt")
+        available = [Path(filename).stem for filename in available]
+        for a in available:
+                print(a)
+        if ans in available:
+            ans = ans.lower().strip()
+            print(ans)
+            self.getRandom(ans)
+        else : 
+            self.ids.result_bar.text = "Your feelings are invalid"
 
     def log_out(self):
         self.manager.transition.direction = "right"
         self.manager.current = "login_screen"
+
 
 
 class SignupScreen(Screen):
@@ -52,6 +69,9 @@ class SignupScreen(Screen):
         if db.createUser(username,password) != "Fail":
             self.manager.transition.direction = "right"
             self.manager.current = "signup_screen_success"
+
+    def go_back(self):
+        self.manager.current = "login_screen"
 
 
 class SignupScreenSuccess(Screen):
